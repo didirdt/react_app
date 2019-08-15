@@ -1,6 +1,10 @@
 import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
+import React, { Component } from 'react';
+
 import {
+  ActivityIndicator,
+  Button,
+  FlatList,
   Image,
   Platform,
   ScrollView,
@@ -11,6 +15,7 @@ import {
 } from 'react-native';
 
 import { MonoText } from '../components/StyledText';
+import PersonList from '../components/api/Base';
 
 export default function HomeScreen() {
   return (
@@ -29,30 +34,11 @@ export default function HomeScreen() {
           />
         </View>
 
-        <View style={styles.getStartedContainer}>
-          <DevelopmentModeNotice />
-
-          <Text style={styles.getStartedText}>Get started by opening</Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-            <MonoText>screens/HomeScreen.js</MonoText>
-          </View>
-
-          <Text style={styles.getStartedText}>
-            Change this text and your app will automatically reload.
-          </Text>
-        </View>
-
         <View style={styles.helpContainer}>
-          <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>
-              Help, it didn’t automatically reload!
-            </Text>
-          </TouchableOpacity>
+          <PersonList></PersonList>
         </View>
       </ScrollView>
-
+      
       <View style={styles.tabBarInfoContainer}>
         <Text style={styles.tabBarInfoText}>
           This is a tab bar. You can edit it in:
@@ -64,6 +50,7 @@ export default function HomeScreen() {
             navigation/MainTabNavigator.js
           </MonoText>
         </View>
+
       </View>
     </View>
   );
@@ -72,6 +59,11 @@ export default function HomeScreen() {
 HomeScreen.navigationOptions = {
   header: null,
 };
+
+
+function getData() {
+
+}
 
 function DevelopmentModeNotice() {
   if (__DEV__) {
@@ -95,6 +87,7 @@ function DevelopmentModeNotice() {
     );
   }
 }
+
 
 function handleLearnMorePress() {
   WebBrowser.openBrowserAsync(
