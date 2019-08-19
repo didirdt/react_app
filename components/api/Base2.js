@@ -33,7 +33,6 @@ export default class Base2 extends React.Component {
         .catch(error => {
           console.log(error);
         });
-
         this.setState({ arrayHolder: [...this.array] })
       }
      
@@ -53,7 +52,13 @@ export default class Base2 extends React.Component {
         this.state.p = item;
         this.setModalVisible(true)
       }
-     
+
+      ClearData = () => {
+        this.array = [];
+        this.setState({ arrayHolder: [ ] })
+        
+      }
+
       AlertData = () => {
         alert("Your Input data is : " + this.state.textInput_Holder);
       }
@@ -72,18 +77,13 @@ export default class Base2 extends React.Component {
             <TouchableOpacity onPress={this.AlertData} activeOpacity={0.7} style={styles.button} >
               <Text style={styles.buttonText}> Show My Input </Text>
             </TouchableOpacity>
-            <View
-                style={{
-                    borderBottomColor: 'black',
-                    borderBottomWidth: 1,
-                }}
-                />
+            
             <TouchableOpacity onPress={this.joinData} activeOpacity={0.7} style={styles.button} >
                 <Text style={styles.buttonText}> Get Data </Text>
             </TouchableOpacity>
 
             <FlatList
-     
+              
               data={this.state.arrayHolder}
      
               width='100%'
@@ -97,7 +97,11 @@ export default class Base2 extends React.Component {
               renderItem={({ item }) => <Text style={styles.item} onPress={this.GetItem.bind(this, item)} > {item} </Text>}
               
             />
-            
+
+            <TouchableOpacity onPress={this.ClearData} activeOpacity={0.7} style={styles.button} >
+                <Text style={styles.buttonText}> Clear Data </Text>
+            </TouchableOpacity>
+
             <View style={styles.MainContainer}>
                 <Modal
                     animationType="slide"

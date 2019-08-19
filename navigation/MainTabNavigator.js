@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ApiScreen from '../screens/ApiScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -54,6 +55,23 @@ LinksStack.navigationOptions = {
 LinksStack.path = '';
 
 ///////////////////////////////////////
+const ApiStack = createStackNavigator(
+  {
+    Settings: ApiScreen,
+  },
+  config
+);
+
+ApiStack.navigationOptions = {
+  tabBarLabel: 'API',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-globe' : 'md-planet'} />
+  ),
+};
+
+ApiStack.path = '';
+
+///////////////////////////////////////
 const SettingsStack = createStackNavigator(
   {
     Settings: SettingsScreen,
@@ -74,6 +92,7 @@ SettingsStack.path = '';
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
+  ApiStack,
   SettingsStack,
 });
 

@@ -39,7 +39,7 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
       
-      <View style={styles.tabBarInfoContainer}>
+      {/* <View style={styles.tabBarInfoContainer}>
         <Text style={styles.tabBarInfoText}>
           This is a tab bar. You can edit it in:
         </Text>
@@ -50,8 +50,8 @@ export default function HomeScreen() {
             navigation/MainTabNavigator.js
           </MonoText>
         </View>
+      </View> */}
 
-      </View>
     </View>
   );
 }
