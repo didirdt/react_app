@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { StyleSheet, FlatList, Text, View, Alert, TouchableOpacity, TextInput 
+import { Modal, TouchableHighlight, StyleSheet, FlatList, Text, View, Alert, TouchableOpacity, TextInput, Image
 } from 'react-native';
 
 export default class Base2 extends React.Component {
@@ -8,32 +8,33 @@ export default class Base2 extends React.Component {
     
         super(props);
      
-        this.array = ['ONE'
-        ],
-     
-          this.state = {
-     
+        this.array = [],     
+        this.state = {
             arrayHolder: [],
-     
-            textInput_Holder: ''
-     
-          }
-     
+            textInput_Holder: '',
+            modalVisible: false,
+            p: '',
+        }
       }
      
       componentDidMount() {
-     
         this.setState({ arrayHolder: [...this.array] })
-     
+      }
+
+      setModalVisible(visible) {
+        this.setState({modalVisible: visible});
       }
      
-     
       joinData = () => {
-     
-        this.array.push(this.state.textInput_Holder);
-     
+        axios.get('https://dog.ceo/api/breeds/image/random')
+        .then(response => {
+          this.array.push(response.data.message);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
         this.setState({ arrayHolder: [...this.array] })
-     
       }
      
       FlatListItemSeparator = () => {
@@ -49,17 +50,18 @@ export default class Base2 extends React.Component {
       }
      
       GetItem(item) {
-     
-        Alert.alert(item);
-     
+        this.state.p = item;
+        this.setModalVisible(true)
       }
      
-     
+      AlertData = () => {
+        alert("Your Input data is : " + this.state.textInput_Holder);
+      }
+
       render() {
         return (
-     
           <View style={styles.MainContainer}>
-     
+              
             <TextInput
               placeholder="Enter Value Here"
               onChangeText={data => this.setState({ textInput_Holder: data })}
@@ -67,12 +69,19 @@ export default class Base2 extends React.Component {
               underlineColorAndroid='transparent'
             />
      
-            <TouchableOpacity onPress={this.joinData} activeOpacity={0.7} style={styles.button} >
-     
-              <Text style={styles.buttonText}> Add Values To FlatList </Text>
-     
+            <TouchableOpacity onPress={this.AlertData} activeOpacity={0.7} style={styles.button} >
+              <Text style={styles.buttonText}> Show My Input </Text>
             </TouchableOpacity>
-     
+            <View
+                style={{
+                    borderBottomColor: 'black',
+                    borderBottomWidth: 1,
+                }}
+                />
+            <TouchableOpacity onPress={this.joinData} activeOpacity={0.7} style={styles.button} >
+                <Text style={styles.buttonText}> Get Data </Text>
+            </TouchableOpacity>
+
             <FlatList
      
               data={this.state.arrayHolder}
@@ -86,11 +95,35 @@ export default class Base2 extends React.Component {
               ItemSeparatorComponent={this.FlatListItemSeparator}
      
               renderItem={({ item }) => <Text style={styles.item} onPress={this.GetItem.bind(this, item)} > {item} </Text>}
+              
             />
-     
-     
+            
+            <View style={styles.MainContainer}>
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                    }}>
+
+                    <View style={{marginTop: 22}}>
+                        <View>
+                            <Text>{this.state.p}</Text>
+                            <Image source={{uri:this.state.p, width: 150, height: 150}}></Image>
+
+                            <TouchableHighlight style={styles.button}
+                                onPress={() => {
+                                this.setModalVisible(!this.state.modalVisible);
+                                }}>
+                                <Text style={styles.buttonText}>Hide Modal</Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
           </View>
-     
+          
         );
       }
     }

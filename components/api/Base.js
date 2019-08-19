@@ -26,7 +26,6 @@ export default class PersonList extends React.Component {
   componentDidMount() {
     axios.get('https://dog.ceo/api/breeds/image/random')
     .then(response => {
-      console.log(response.data);
       this.setState({ ImageURL: response.data.message });
     })
     .catch(error => {
@@ -38,22 +37,41 @@ export default class PersonList extends React.Component {
     this.setState(previousState => ({ content: !previousState.content }))
   }
 
-  render(){
-    const { ImageURL } = this.state.ImageURL;
+  RefreshImg = () => {
+    axios.get('https://dog.ceo/api/breeds/image/random')
+    .then(response => {
+      this.setState({ ImageURL: response.data.message });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
 
+  render(){
     return( 
       <View style={styles.helpContainer}>
         <View style={styles.buttonContainer}>
           <Button
             onPress={this.componentHideAndShow}
-            title="Hide Data"
+            title="Show/Hide Data"
           />
         </View>
+        
         <View style={styles.helpContainer}>
           {
-            this.state.content ? <Text>asdasdasd {console.log(ImageURL)}</Text>: null
+            this.state.content ? <Image source={this.state.ImageURL.length > 0 ? {uri: this.state.ImageURL, width: 150, height: 150} : null }></Image> : null
           }
         </View>
+
+        <View style={styles.helpContainer}>
+          <View style={styles.buttonContainer}>
+            <Button
+                onPress={this.RefreshImg}
+                title="Refresh Image"
+              />
+          </View>
+        </View>
+        
       </View>
     );
   }
