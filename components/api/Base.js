@@ -14,61 +14,53 @@ import {
 } from 'react-native';
 
 export default class PersonList extends React.Component {
-  constructor(props){
+
+  constructor(props) {
     super(props);
-    this.state ={ isLoading: true}
+    this.state = {
+      ImageURL: '',
+      content: true,
+    }
+  }
+  
+  componentDidMount() {
+    axios.get('https://dog.ceo/api/breeds/image/random')
+    .then(response => {
+      console.log(response.data);
+      this.setState({ ImageURL: response.data.message });
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 
-  componentDidMount(){
-    return fetch('https://jsonplaceholder.typicode.com/users')
-      .then((response) => response.json())
-      .then((responseJson) => {
-
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson.movies,
-        }, function(){
-
-        });
-
-      })
-      .catch((error) =>{
-        console.error(error);
-      });
+  componentHideAndShow = () => {
+    this.setState(previousState => ({ content: !previousState.content }))
   }
-
-
 
   render(){
-    
-    if(this.state.isLoading){
-      return(
-        <View style={{flex: 1, padding: 20}}>
-          <ActivityIndicator/>
-        </View>
-      )
-    }
+    const { ImageURL } = this.state.ImageURL;
 
     return( 
       <View style={styles.helpContainer}>
         <View style={styles.buttonContainer}>
           <Button
-            onPress={onPressButton}
-            title="Get Data"
+            onPress={this.componentHideAndShow}
+            title="Hide Data"
           />
         </View>
-        <FlatList
-          data={this.state.dataSource}
-          renderItem={({item}) => <Text>{item["name"]}, {item["email"]}</Text>}
-          keyExtractor={({id}, index) => id}
-        />
+        <View style={styles.helpContainer}>
+          {
+            this.state.content ? <Text>asdasdasd {console.log(ImageURL)}</Text>: null
+          }
+        </View>
       </View>
     );
   }
 }
 
 function onPressButton() {
-  
+
 }
 
 

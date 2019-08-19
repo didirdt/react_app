@@ -62,7 +62,7 @@ HomeScreen.navigationOptions = {
 
 
 function getData() {
-
+  alert("asdasdasd");
 }
 
 function DevelopmentModeNotice() {
